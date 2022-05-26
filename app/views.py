@@ -10,7 +10,7 @@ from app.serializers import ProductSerializers, ProductModel, UserSerializer, Gr
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from rest_framework.viewsets import ViewSet
+from rest_framework.viewsets import ViewSet,ModelViewSet
 
 
 
@@ -125,3 +125,10 @@ class ProductOperationsOne(ViewSet):
             return Response({"message":"deleted"})
         else:
             return Response({"message":"invalid product"})
+
+
+
+class ProductModelviewset(ModelViewSet):
+    serializer_class = ProductSerializers
+    queryset = ProductModel.objects.all()
+    

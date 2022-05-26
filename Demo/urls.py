@@ -22,12 +22,16 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewset)
 router.register(r'groups', views.GroupViewset)
+router.register('app', views.ProductModelviewset)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #modelviewset
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    #path('product_modelviewset/',include('app.urls')),
+    #apiview
     path('product/',views.ProductOperations.as_view(), name="product"),
     path('one_product/<product>',csrf_exempt(views.OneProductOperation.as_view()), name="oneproductoperation"),
     #viewset
@@ -36,5 +40,4 @@ urlpatterns = [
     path('read_data_one/<int:pk>/',views.ProductOperationsOne.as_view({'get':'retrieve'})),
     path('update_data_one/<int:pk>/',views.ProductOperationsOne.as_view({'put':'update'})),
     path('delete_data_one/<int:pk>/',views.ProductOperationsOne.as_view({'delete':'destroy'})),
-
 ]
