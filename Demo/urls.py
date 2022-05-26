@@ -30,4 +30,10 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('product/',views.ProductOperations.as_view(), name="product"),
     path('one_product/<product>',csrf_exempt(views.OneProductOperation.as_view()), name="oneproductoperation"),
+    path('product_viewset/',views.ProductOperationsViewset.as_view({'get':'list'}), name="productoperationsviewset"),
+    path('save_product_viewset/', views.ProductOperationsViewset.as_view({'post':'create'}), name="saveproductoperationsviewset"),
+    path('read_data_one/<int:pk>/',views.ProductOperationsOne.as_view({'get':'retrieve'})),
+    path('update_data_one/<int:pk>/',views.ProductOperationsOne.as_view({'put':'update'})),
+    path('delete_data_one/<int:pk>/',views.ProductOperationsOne.as_view({'delete':'destroy'})),
+
 ]
