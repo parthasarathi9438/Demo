@@ -2,6 +2,7 @@ from distutils import errors
 from distutils.log import error
 from email import message
 from functools import partial
+import mimetypes
 from os import P_NOWAIT
 from django.shortcuts import render
 from rest_framework.views import APIView
@@ -10,7 +11,11 @@ from app.serializers import ProductSerializers, ProductModel, UserSerializer, Gr
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from rest_framework.viewsets import ViewSet,ModelViewSet
+from rest_framework.viewsets import ViewSet,ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView,\
+                                    DestroyAPIView, UpdateAPIView, ListCreateAPIView, RetrieveUpdateAPIView,\
+                                    RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework import mixins, generics
 
 
 
@@ -131,4 +136,61 @@ class ProductOperationsOne(ViewSet):
 class ProductModelviewset(ModelViewSet):
     serializer_class = ProductSerializers
     queryset = ProductModel.objects.all()
-    
+
+
+class ReadonlyProductOperation(ReadOnlyModelViewSet):
+    serializer_class = ProductSerializers
+    queryset = ProductModel.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class CreateProduct(CreateAPIView):
+    serializer_class = ProductSerializers
+    queryset = ProductModel.objects.all()
+
+
+class ListProduct(ListAPIView):
+    serializer_class = ProductSerializers
+    queryset = ProductModel.objects.all()
+
+class RetrieveProduct(RetrieveAPIView):
+    serializer_class = ProductSerializers
+    queryset = ProductModel.objects.all()
+
+class DestroyProduct(DestroyAPIView):
+    serializer_class = ProductSerializers
+    queryset = ProductModel.objects.all()
+
+class UpdateProduct(UpdateAPIView):
+    serializer_class = ProductSerializers
+    queryset = ProductModel.objects.all()
+
+class ListCreateProduct(ListCreateAPIView):
+    serializer_class = ProductSerializers
+    queryset = ProductModel.objects.all()
+
+class RetrieveUpdateProduct(RetrieveUpdateAPIView):
+    serializer_class = ProductSerializers
+    queryset = ProductModel.objects.all()
+
+class RetrieveDestroyProduct(RetrieveDestroyAPIView):
+    serializer_class = ProductSerializers
+    queryset = ProductModel.objects.all()
+
+class RetrieveUpdateDestroyProduct(RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductSerializers
+    queryset = ProductModel.objects.all()
+
+
+class MixinsProduct(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+    serializer_class = ProductSerializers
+    queryset = ProductModel.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
