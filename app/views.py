@@ -16,6 +16,7 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView,
                                     DestroyAPIView, UpdateAPIView, ListCreateAPIView, RetrieveUpdateAPIView,\
                                     RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import mixins, generics
+from rest_framework.renderers import TemplateHTMLRenderer
 
 
 
@@ -182,7 +183,7 @@ class RetrieveUpdateDestroyProduct(RetrieveUpdateDestroyAPIView):
     queryset = ProductModel.objects.all()
 
 
-class MixinsProduct(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+class MixinsProduct(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView):
     serializer_class = ProductSerializers
     queryset = ProductModel.objects.all()
 
@@ -194,3 +195,16 @@ class MixinsProduct(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Destr
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+
+# class TemplateListProduct(ListAPIView):
+#     queryset = ProductModel.objects.all()
+#     renderer_classes = [TemplateHTMLRenderer]
+
+#     def get(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         return Response({'product':self.object}, template_name="product_details.html")
+

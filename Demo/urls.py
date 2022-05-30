@@ -57,4 +57,12 @@ urlpatterns = [
 
     #mixins
     path('mixins_product/',views.MixinsProduct.as_view()),
+
+    #templatehtmlrenderer
+    #path('template_list_prduct/',views.TemplateListProduct.as_view()),
 ]
+
+
+admin.site.site_header = "PARTHA"
+admin.site.site_title = "Learning"
+admin.site.index_title = "Welcome"
